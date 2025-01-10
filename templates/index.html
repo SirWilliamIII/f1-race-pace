@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speed Visualization on Track Map</title>
+  </head>
+  <body>
+    <h1>2024 F1 Race Pace</h1>
+    <form method="POST">
+      <br />
+      <label for="wknd">Weekend:</label>
+      <select id="wknd" name="wknd" required>
+        <option value="1">Bahrain Grand Prix</option>
+        <option value="2">Saudi Arabian Grand Prix</option>
+        <option value="3">Australian Grand Prix</option>
+        <option value="4">Japanese Grand Prix</option>
+        <option value="5">Chinese Grand Prix</option>
+        <option value="6">Miami Grand Prix</option>
+        <option value="7">Emilia Romagna Grand Prix</option>
+        <option value="8">Monaco Grand Prix</option>
+        <option value="9">Canadian Grand Prix</option>
+        <option value="10">Spanish Grand Prix</option>
+        <option value="11">Austrian Grand Prix</option>
+        <option value="12">British Grand Prix</option>
+        <option value="13">Hungarian Grand Prix</option>
+        <option value="14">Belgian Grand Prix</option>
+        <option value="15">Dutch Grand Prix</option>
+        <option value="16">Italian Grand Prix</option>
+        <option value="17">Azerbaijan Grand Prix</option>
+        <option value="18">Singapore Grand Prix</option>
+        <option value="19">United States Grand Prix</option>
+        <option value="20">Mexico City Grand Prix</option>
+        <option value="21">Sao Paulo Grand Prix</option>
+        <option value="22">Las Vegas Grand Prix</option>
+        <option value="23">Qatar Grand Prix</option>
+        <option value="24">Abu Dhabi Grand Prix</option></select
+      ><br /><br />
+      <div>
+        <label for="ses">Fastest Session:</label>
+        <input
+          type="text"
+          id="ses"
+          name="ses"
+          placeholder="Enter R or Q"
+          required
+        /><br />
+        <small>R for Race, Q for Qualifying</small>
+      </div>
+      <br />
+      <div>
+        <label for="driver">Driver:</label>
+        <input
+          type="text"
+          id="driver"
+          name="driver"
+          placeholder="Driver num OR first 3 letters of last name"
+          required
+        /><br />
+        <small>Ex: Lewis Hamilton - 44 or HAM</small>
+        <br />
+      </div>
+      <br />
+      <button type="submit">Generate Plot</button>
+    </form>
+
+    {% if plot_url %}
+    <h2>Generated Plot:</h2>
+    <img src="data:image/png;base64,{{ plot_url }}" alt="Speed Visualization" />
+    {% endif %} {% if error_message %}
+    <h2>Error:</h2>
+    <p>{{ error_message }}</p>
+    {% endif %}
+    <br />
+  </body>
+  <script>
+    const races = [
+      {
+        weekend: 1,
+        name: "Bahrain Grand Prix",
+      },
+      {
+        weekend: 2,
+        name: "Saudi Arabian Grand Prix",
+      },
+      {
+        weekend: 3,
+        name: "Australian Grand Prix",
+      },
+      {
+        weekend: 4,
+        name: "Japanese Grand Prix",
+      },
+      {
+        weekend: 5,
+        name: "Chinese Grand Prix",
+      },
+      {
+        weekend: 6,
+        name: "Miami Grand Prix",
+      },
+      {
+        weekend: 7,
+        name: "Emilia Romagna Grand Prix",
+      },
+      {
+        weekend: 8,
+        name: "Monaco Grand Prix",
+      },
+      {
+        weekend: 9,
+        name: "Canadian Grand Prix",
+      },
+      {
+        weekend: 10,
+        name: "Spanish Grand Prix",
+      },
+      {
+        weekend: 11,
+        name: "Austrian Grand Prix",
+      },
+      {
+        weekend: 12,
+        name: "British Grand Prix",
+      },
+      {
+        weekend: 13,
+        name: "Hungarian Grand Prix",
+      },
+      {
+        weekend: 14,
+        name: "Belgian Grand Prix",
+      },
+      {
+        weekend: 15,
+        name: "Dutch Grand Prix",
+      },
+      {
+        weekend: 16,
+        name: "Italian Grand Prix",
+      },
+      {
+        weekend: 17,
+        name: "Azerbaijan Grand Prix",
+      },
+      {
+        weekend: 18,
+        name: "Singapore Grand Prix",
+      },
+      {
+        weekend: 19,
+        name: "United States Grand Prix",
+      },
+      {
+        weekend: 20,
+        name: "Mexico City Grand Prix",
+      },
+      {
+        weekend: 21,
+        name: "Sao Paulo Grand Prix",
+      },
+      {
+        weekend: 22,
+        name: "Las Vegas Grand Prix",
+      },
+      {
+        weekend: 23,
+        name: "Qatar Grand Prix",
+      },
+      {
+        weekend: 24,
+        name: "Abu Dhabi Grand Prix",
+      },
+    ];
+  </script>
+</html>
