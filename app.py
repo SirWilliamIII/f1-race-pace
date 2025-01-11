@@ -90,7 +90,7 @@ def tire_strategy():
         # Get user inputs
         year = 2024
         wknd = request.form['wknd']
-        ses = request.form['ses']
+        ses = 'R'
 
         try:
             session = ff1.get_session(year, wknd, ses)
