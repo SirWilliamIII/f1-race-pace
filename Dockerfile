@@ -1,15 +1,11 @@
-# syntax=docker/dockerfile:1
+FROM python:3.9-slim
 
-ARG PYTHON_VERSION=3.12.8
+WORKDIR /app
 
-FROM python:${PYTHON_VERSION}-slim
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-LABEL fly_launch_runtime="flask"
-
-WORKDIR /code
-
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
