@@ -7,6 +7,9 @@
 # C extensions
 **/*.so
 
+Procfile
+
+
 **/venv/*
 # Distribution / packaging
 **/.Python

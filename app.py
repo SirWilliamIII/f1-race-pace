@@ -115,7 +115,7 @@ def tire_strategy():
             
             
             fig, ax = plt.subplots(figsize=(3.5, 5))
-             
+            
             for driver in drivers:                    
                 driver_stints = stints.loc[stints["Driver"] == driver]
                 previous_stint_end = 0  # Track where the previous stint ended
@@ -165,7 +165,5 @@ def tire_strategy():
     return render_template('index.html', plot_url=None)
 
     
-
-
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(host='0.0.0.0', port=5000, debug=False)
