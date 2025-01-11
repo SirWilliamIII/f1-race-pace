@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Speed Visualization on Track Map</title>
+    <title>Tire Strategy</title>
   </head>
   <body>
-    <h1>2024 F1 Race Pace</h1>
-    <a href="/tire-strategy">Tire Strategy</a>
+    <h1>2024 F1 Tire Strategy</h1>
+    <a href="/">Speed Visualization</a>
     <form method="POST">
       <br />
       <label for="wknd">Weekend:</label>
@@ -46,21 +46,9 @@
           placeholder="Session type abbreviation"
           required
         /><br />
-        <small>Ex: FP1, FP2, FP3, Q, S, SS, R</small>
+        <small>Either: FP1, FP2, FP3, Q, S, SS,R</small>
       </div>
       <br />
-      <div>
-        <label for="driver">Driver:</label>
-        <input
-          type="text"
-          id="driver"
-          name="driver"
-          placeholder="Driver # OR last name"
-          required
-        /><br />
-        <small>Ex: 44 OR HAM</small>
-        <br />
-      </div>
       <br />
       <button type="submit">Generate Plot</button>
     </form>

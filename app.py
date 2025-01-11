@@ -36,15 +36,7 @@ def index():
             # Create line segments
             points = np.array([x, y]).T.reshape(-1, 1, 2)
             segments = np.concatenate([points[:-1], points[1:]], axis=1)
-            
-            
-            
-            ################## Add the following code ##################
-            
-            
-            
-            
-            
+        
             # Create the plot with a smaller size
             fig, ax = plt.subplots(sharex=True, sharey=True, figsize=(3.56, 2.2))  # Shrunk by 70%
             fig.suptitle(f'{weekend.name} {year} - {driver} - Speed', size=10, y=0.97)  # Adjust title size
@@ -82,7 +74,6 @@ def index():
 
             # Encode the image to base64 for embedding in HTML
             plot_url = base64.b64encode(img.getvalue()).decode('utf8')
-            print(f"Plot URL: {plot_url}")  # Debugging line
 
             return render_template('index.html', plot_url=plot_url)
 
@@ -91,6 +82,90 @@ def index():
             return render_template('index.html', error_message=error_message)
 
     return render_template('index.html', plot_url=None)
+
+
+@app.route('/tire-strategy', methods=['GET', 'POST'])
+def tire_strategy():
+    if request.method == 'POST':
+        # Get user inputs
+        year = 2024
+        wknd = request.form['wknd']
+        ses = request.form['ses']
+
+        try:
+            session = ff1.get_session(year, wknd, ses)
+            session.load()
+            drivers = session.drivers
+            drivers = [session.get_driver(driver)["Abbreviation"] for driver in drivers]
+            laps = session.laps
+            
+
+            compound_colors = {
+                "SOFT": "#FF3333",  # Red for Soft
+                "MEDIUM": "#FFFF66",  # Yellow for Medium
+                "HARD": "#0000FF",  # White for Hard
+                "INTERMEDIATE": "#33CC33",  # Green for Intermediate
+                "WET": "#3399FF"  # Blue for Wet
+            }
+            
+            stints = laps[["Driver", "Stint", "Compound", "LapNumber"]]
+            stints = stints.groupby(["Driver", "Stint", "Compound"])
+            stints = stints.count().reset_index()
+            stints = stints.rename(columns={"LapNumber": "StintLength"})
+            
+            
+            fig, ax = plt.subplots(figsize=(3.5, 5))
+             
+            for driver in drivers:                    
+                driver_stints = stints.loc[stints["Driver"] == driver]
+                previous_stint_end = 0  # Track where the previous stint ended
+                
+                for idx, row in driver_stints.iterrows():
+                    # Use the predefined color for the compound
+                    c = compound_colors[row['Compound']]
+
+                    # Plot the stint as a horizontal bar
+                    plt.barh(
+                        y=driver, 
+                        width=row["StintLength"], 
+                        left=previous_stint_end, 
+                        color=c, 
+                        edgecolor="black",
+                        fill=True
+                    )
+
+                    # Update where the next stint should start
+                    previous_stint_end += row["StintLength"]
+                
+            plt.title("2022 Hungarian Grand Prix Strategies")
+            plt.xlabel("Lap Number")
+            plt.grid(False)
+            ax.invert_yaxis()  # Place drivers in reverse order (top = best finisher)
+
+            # Aesthetics for cleaner output
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+            ax.spines['left'].set_visible(False)
+
+            plt.tight_layout()
+            img = io.BytesIO()
+            plt.savefig(img, format='png', dpi=300, bbox_inches=None)
+            img.seek(0)
+            plt.close()
+
+            # Encode the image to base64 for embedding in HTML
+            plot_url = base64.b64encode(img.getvalue()).decode('utf8')
+    
+            return render_template('tire-strategy.html', plot_url=plot_url)
+
+        except Exception as e:
+            error_message = f"Error: {str(e)}"
+            return render_template('index.html', error_message=error_message)
+
+    return render_template('index.html', plot_url=None)
+
+    
+
 
 if __name__ == '__main__':
     app.run(debug=False)
