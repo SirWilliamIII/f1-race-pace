@@ -39,7 +39,7 @@ def index():
         
             # Create the plot with a smaller size
             fig, ax = plt.subplots(sharex=True, sharey=True, figsize=(3.56, 2.2))  # Shrunk by 70%
-            fig.suptitle(f'{weekend.name} {year} - {driver} - Speed', size=10, y=0.97)  # Adjust title size
+            fig.suptitle(f'{weekend.name} {year} - {driver} - Speed', size=5, y=0.47)  # Adjust title size
 
             # Adjust margins and turn off axis
             plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.12)
@@ -91,7 +91,7 @@ def tire_strategy():
         year = 2024
         wknd = request.form['wknd']
         ses = 'R'
-
+        session_name = ""
         try:
             session = ff1.get_session(year, wknd, ses)
             session.load()
@@ -99,11 +99,12 @@ def tire_strategy():
             drivers = [session.get_driver(driver)["Abbreviation"] for driver in drivers]
             laps = session.laps
             
-
+            session_name = session.event['EventName']
+            
             compound_colors = {
                 "SOFT": "#FF3333",  # Red for Soft
                 "MEDIUM": "#FFFF66",  # Yellow for Medium
-                "HARD": "#0000FF",  # White for Hard
+                "HARD": "#0033FF",  # Blue for Hard
                 "INTERMEDIATE": "#33CC33",  # Green for Intermediate
                 "WET": "#3399FF"  # Blue for Wet
             }
@@ -115,6 +116,7 @@ def tire_strategy():
             
             
             fig, ax = plt.subplots(figsize=(3.5, 5))
+            plt.subplots_adjust(left=0.3, right=0.95, top=0.9, bottom=0.1)
             
             for driver in drivers:                    
                 driver_stints = stints.loc[stints["Driver"] == driver]
@@ -131,15 +133,20 @@ def tire_strategy():
                         left=previous_stint_end, 
                         color=c, 
                         edgecolor="black",
-                        fill=True
+                        fill=True,
+                        height=0.8
                     )
 
                     # Update where the next stint should start
                     previous_stint_end += row["StintLength"]
-                
-            plt.title("2022 Hungarian Grand Prix Strategies")
-            plt.xlabel("Lap Number")
+
+            plt.title(session_name, fontsize=12)
+            plt.xlabel("Lap Number", fontsize=12)
+            plt.xticks(fontsize=10)
+            plt.yticks(fontsize=10)
             plt.grid(False)
+            plt.tight_layout()
+            
             ax.invert_yaxis()  # Place drivers in reverse order (top = best finisher)
 
             # Aesthetics for cleaner output
@@ -147,9 +154,11 @@ def tire_strategy():
             ax.spines['right'].set_visible(False)
             ax.spines['left'].set_visible(False)
 
-            plt.tight_layout()
+            
+            
+            
             img = io.BytesIO()
-            plt.savefig(img, format='png', dpi=300, bbox_inches=None)
+            plt.savefig(img, format='png', dpi=200, bbox_inches=None)
             img.seek(0)
             plt.close()
 
@@ -160,9 +169,9 @@ def tire_strategy():
 
         except Exception as e:
             error_message = f"Error: {str(e)}"
-            return render_template('index.html', error_message=error_message)
+            return render_template('tire-strategy.html', error_message=error_message)
 
-    return render_template('index.html', plot_url=None)
+    return render_template('tire-strategy.html', plot_url=None)
 
     
 if __name__ == '__main__':
