@@ -8,8 +8,14 @@ import numpy as np
 import fastf1 as ff1
 import io
 import base64
+from flask import session as flask_session
+
+
+
 
 app = Flask(__name__)
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -93,7 +99,8 @@ def tire_strategy():
         ses = 'R'
         session_name = ""
         try:
-            session = ff1.get_session(year, wknd, ses)
+            print(wknd)
+            session = ff1.get_session(year, int(wknd), ses)
             session.load()
             drivers = session.drivers
             drivers = [session.get_driver(driver)["Abbreviation"] for driver in drivers]
@@ -175,4 +182,4 @@ def tire_strategy():
 
     
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=4000, debug=True)
