@@ -68,8 +68,9 @@ def index():
             line = ax.add_collection(lc)
 
             # Create a color bar as a legend
-            cbaxes = fig.add_axes([0.25, 0.05, 0.5, 0.05])
+            cbaxes = fig.add_axes([0.10, 0.05, 0.25, 0.10])
             normlegend = plt.Normalize(vmin=color.min(), vmax=color.max())
+            legend = ColorbarBase(cbaxes, norm=normlegend, cmap='plasma', orientation='horizontal')
 
             # Save the plot to a BytesIO object
             img = io.BytesIO()
