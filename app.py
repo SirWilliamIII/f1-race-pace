@@ -70,12 +70,10 @@ def index():
             # Create a color bar as a legend
             cbaxes = fig.add_axes([0.25, 0.05, 0.5, 0.05])
             normlegend = plt.Normalize(vmin=color.min(), vmax=color.max())
-            legend = ColorbarBase(cbaxes, norm=normlegend, cmap='plasma',
-                                  orientation="horizontal")
 
             # Save the plot to a BytesIO object
             img = io.BytesIO()
-            plt.savefig(img, format='png', dpi=300, bbox_inches=None)
+            plt.savefig(img, format='png', dpi=150, bbox_inches="tight")
             img.seek(0)
             plt.close()
 
