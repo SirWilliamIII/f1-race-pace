@@ -12,10 +12,7 @@ from fastf1.plotting._constants import Constants
 from flask import session as flask_session
 
 
-
-
 app = Flask(__name__)
-
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -134,18 +131,16 @@ def tire_strategy():
                     c = compound_colors[row['Compound']]
 
                     # Plot the stint as a horizontal bar
-                    plt.barh(
+                    plt.barh (
                         y=driver, 
                         width=row["StintLength"], 
                         left=previous_stint_end, 
-                        color=c, 
+                        color=c,
                         edgecolor="black",
                         fill=True,
-                        height=0.8
+                        height=0.75
                     )
-
-                    # Update where the next stint should start
-                    previous_stint_end += row["StintLength"]
+                previous_stint_end += row["StintLength"]
 
             plt.title(session_name, fontsize=12)
             plt.xlabel("Lap Number", fontsize=12)
@@ -165,7 +160,7 @@ def tire_strategy():
             
             
             img = io.BytesIO()
-            plt.savefig(img, format='png', dpi=200, bbox_inches=None)
+            plt.savefig(img, format='png', dpi=150, bbox_inches="tight")
             img.seek(0)
             plt.close()
 
